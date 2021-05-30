@@ -2,7 +2,7 @@
   <v-container>
     <v-data-table
       :headers="headers"
-      :items="post"
+      :items="posts"
       sort-by="ID"
       class="elevation-1"
       :items-per-page="5"
@@ -128,7 +128,7 @@ export default {
       { text: 'Writer', value: 'owner' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    post: [],
+    posts: [],
     editedIndex: -1,
     editedItem: {
       name: '',
@@ -182,13 +182,13 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.post.indexOf(item)
+      this.editedIndex = this.posts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem(item) {
-      this.editedIndex = this.post.indexOf(item)
+      this.editedIndex = this.posts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
