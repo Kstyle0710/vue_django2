@@ -120,7 +120,7 @@ export default {
         text: 'ID',
         align: 'start',
         sortable: false,
-        value: 'name',
+        value: 'id',
       },
       { text: 'Title', value: 'title' },  // value에는 장고로부터 넘겨받을 변수 명칭
       { text: 'Summary', value: 'description' },
