@@ -21,15 +21,11 @@
       <v-col cols="12" sm="4" lg="3">
         <v-card class="pa-2 mb-5" tile>
           <p>prev post</p>
-          <h2>
-            Previous Title here
-          </h2>
+          <h2 v-if="post.prev" @click="fecthPostDetail(post.prev.id)" class="my-hover"> {{ post.prev.title }} </h2>
         </v-card>
         <v-card class="pa-2 mb-5" tile>
           <p>next post</p>
-          <h2>
-            Next Title here
-          </h2>
+          <h2 v-if="post.next" @click="fecthPostDetail(post.next.id)" class="my-hover"> {{ post.next.title }} </h2>
         </v-card>
         <v-card class="pa-2 mb-5" tile>
           <h2>
@@ -64,13 +60,14 @@ import axios from "axios";
 
     created() {
       console.log("created()...");
-      this.fetchPostDetail();
+      const postId = 2;
+      this.fetchPostDetail(postId);
     },
 
     methods: {
-      fetchPostDetail() {
-        console.log("fetchPostDetail()...");
-        axios.get('/api/post/2/')
+      fetchPostDetail(postId) {
+        console.log("fetchPostDetail()...", postId);
+        axios.get(`/api/post/${postId}/`)     // ES6 template literal 사용
         .then(res => {
           console.log("POST DETAIL GET RES", res);
           this.post = res.data;
@@ -84,3 +81,10 @@ import axios from "axios";
     }
   }
 </script>
+
+<style scoped>
+.my-hover:hover {
+  cursor: pointer;
+  font-style: italic;
+}  
+</style>
