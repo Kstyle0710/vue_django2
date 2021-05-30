@@ -99,7 +99,7 @@
         </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">
+        <v-btn color="primary" @click="fetchPostList">
           Reset
         </v-btn>
       </template>
@@ -108,6 +108,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: 'HelloWorld',
 
@@ -121,10 +122,10 @@ export default {
         sortable: false,
         value: 'name',
       },
-      { text: 'Title', value: 'calories' },
-      { text: 'Summary', value: 'fat' },
-      { text: 'Update', value: 'carbs' },
-      { text: 'Writer', value: 'protein' },
+      { text: 'Title', value: 'title' },  // value에는 장고로부터 넘겨받을 변수 명칭
+      { text: 'Summary', value: 'description' },
+      { text: 'Update', value: 'modify_dt' },
+      { text: 'Writer', value: 'owner' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     post: [],
@@ -161,34 +162,23 @@ export default {
   },
 
   created() {
-    this.initialize()
+    this.fetchPostList()
   },
 
   methods: {
-    initialize() {
-      this.post = [
-        {
-          name: '1',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-        },
-        {
-          name: '2',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-        },
-        {
-          name: '3',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-      ]
+    fetchPostList() {                    // axios 라이브러리를 통해서 장고로부터 데이터 가져오기(터미널열고 npm install axios)
+      console.log("fetchPostList()...");
+
+      axios.get('/api/post/list/')
+      .then(res => {
+        console.log("POST GET RES", res);
+        this.posts = res.data;
+      })
+      .catch(err => {
+        console.log("POST GET ERR.RESPONSE", err.response);
+        alert(err.response.status +  ' ' + err.response.statusText);
+      });
+     
     },
 
     editItem(item) {
