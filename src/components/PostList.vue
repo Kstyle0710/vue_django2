@@ -9,7 +9,9 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Post List</v-toolbar-title>
+          <v-toolbar-title>Post List
+            <span v-if="tagname" class='body-1 font-italic ml-3'>{with {{ tagname }} tagged}</span>
+          </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
@@ -129,6 +131,7 @@ export default {
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     posts: [],
+    tagname: '',
     editedIndex: -1,
     editedItem: {
       name: '',
@@ -162,20 +165,28 @@ export default {
   },
 
   created() {
+    const params = new URL(location).searchParams;
+    // const paramTag = params.get('tagname');
+    this.tagname = params.get('tagname');
+
     this.fetchPostList()
   },
 
   methods: {
     fetchPostList() {                    // axios 라이브러리를 통해서 장고로부터 데이터 가져오기(터미널열고 npm install axios)
-      console.log("fetchPostList()...");
+      console.log("fetchPostList()...", this.tagname);
 
-      axios.get('/api/post/list/')
+      let getUrl = '';
+      if (this.tagname) getUrl = `/api/post/list/?tagname=${this.tagname}`;
+      else getUrl = '/api/post/list/';
+
+      axios.get(getUrl)
       .then(res => {
-        console.log("POST GET RES", res);
+        console.log("POST LIST GET RES", res);
         this.posts = res.data;
       })
       .catch(err => {
-        console.log("POST GET ERR.RESPONSE", err.response);
+        console.log("POST LIST GET ERR.RESPONSE", err.response);
         alert(err.response.status +  ' ' + err.response.statusText);
       });
      

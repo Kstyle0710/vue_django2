@@ -13,10 +13,11 @@
           <div>
             <strong>Tags</strong>
             <v-chip
-              class="ma-2"
+              class="ma-2 my-hover" 
               outlined
               v-for="(tag, index) in post.tags"
               :key="index"
+              @click="serverPage(tag)"
             >
               {{ tag }}
             </v-chip>
@@ -51,7 +52,8 @@
           <v-chip
             v-for="(tag, index) in tagCloud"
             :key="index"
-            class="ma-2"
+            @click="serverPage(tag.name)"
+            class="ma-2 my-hover"
             :color="tag.color"
             text-color="white"
           >
@@ -111,9 +113,13 @@ export default {
           })
         })
         .catch((err) => {
-          console.log('TAG CLOUD GET ERR.RESPONSE', err.response)
-          alert(err.responsse.status + ' ' + err.response.statusText)
-        })
+          console.log('TAG CLOUD GET ERR.RESPONSE', err.response);
+          alert(err.responsse.status + ' ' + err.response.statusText);
+        });
+    },
+    serverPage(tagname) {
+      console.log("serverPage()...", tagname);
+      location.href = `/blog/post/list/?tagname=${tagname}`;
     },
   },
 }
