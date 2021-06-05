@@ -6,6 +6,7 @@
       sort-by="ID"
       class="elevation-1"
       :items-per-page="5"
+      @click:row = "serverPage"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -192,6 +193,12 @@ export default {
      
     },
 
+    serverPage(item) {
+      console.log("serverPage()...", item);
+      location.href = `/blog/post/${item.id}/`;
+
+    },
+
     editItem(item) {
       this.editedIndex = this.posts.indexOf(item)
       this.editedItem = Object.assign({}, item)
@@ -236,3 +243,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.v-data-table >>> tbody > tr {
+  cursor: pointer;
+
+}
+</style>
